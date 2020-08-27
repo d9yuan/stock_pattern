@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="../" style="font-size: larger; padding-left: 20px;">Back</a>
+<div id="outer">
+    <div id="inner">
+        <h1>Detail View</h1>
+        <div style="clear: both">
+            {% if form.errors %}
+            <h3 style="float: left; color: red"><strong>Error:</strong></h3>
+            {% for field in form %}
+            {% for error in field.errors %}
+            <p style="float: left; clear: both">
+                {% if field != '__all__' %}
+                <strong>{{ field.label }}:</strong>
+                {{ error }}
+                {% endif %}
+            </p>
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            <div>
+                <form method="POST" style="margin-top:5px; font-size:larger"> {% csrf_token %}       
+                <p>{{ form.days.label_tag }} {{ form.days }} <input type="submit" value="Confirm"/></p>    
+                </form>
+            </div>
+            {% endif %}
+            <img src='data:image/png; base64, {{ data }}' alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}

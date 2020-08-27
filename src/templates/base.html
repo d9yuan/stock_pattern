@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Stock Pattern Finder</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    #outer {
+        width: 100%;
+        text-align: center;
+    }
+
+    #inner {
+        display: inline-block;
+    }
+</style>
+<style>
+    #s-table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #s-table td,
+    #s-table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #s-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #s-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #s-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #4da6ff;
+        color: white;
+    }
+</style>
+<style>
+    input[type=button], input[type=submit], input[type=reset] {
+        background-color: #4da6ff;
+        border: none;
+        color: white;
+        padding: 8px 10px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+        outline: none;
+        border-radius: 15px;
+    }
+
+</style>
+
+<body>
+    <!--- 'content' here is just a variable name-->
+    <a href="/" style="font-size: larger; padding-left: 50px;">Home</a>
+    {% block content %}
+    replace me, this is default
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="outer">
+    <div id="inner">
+        <h1>Enter a stock to find the pattern</h1>
+        <div style="float:left; padding-left: 19%">
+        <form method="POST" style="margin-top:5px;font-size: larger;"> {% csrf_token %}
+        <p style="font-size:large">{{ form.stock.label_tag }} {{ form.stock }}  
+        <input type="button" data-toggle="collapse" data-target="#options" value="Options"/>
+        <input type="submit" value="Confirm" style="margin-top:50px" /></p>
+            <div id="options" class="collapse" style="float:left; text-align: left; font-size: smaller;">
+                {% for field in form %}
+                {%  if field.name == 'stock' %}
+                {% else  %}
+                <p>{{ field.label_tag }} {{ field }}</p>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+        </div>
+        <div style="clear: both">
+        {% if form.errors %}
+        <h3 style="float: left; color: red"><strong>Error:</strong></h3>
+        {% for field in form %}
+        {% for error in field.errors %}
+        <p style="float: left; clear: both">
+            {% if field != '__all__' %}
+            <strong>{{ field.label }}:</strong>
+            {{ error }}
+            {% endif %}
+        </p>
+        {% endfor %}
+        {% endfor %}
+        {% elif exist_error %}
+        <h2>Stock Doesn't Exist</h2>
+        {% else %}
+        {% if found %} 
+        <table id="s-table" style="margin-top: 50px;">
+            <tr>
+                <th>Date</th>
+                <th>Price at Rise</th>
+                <th>Detail</th>
+            </tr>
+            {% for item in found %}
+            <tr> 
+                <td>{{ item.0 }}</td>
+                <td>{{ item.1 }}</td>
+                <td><a href="./{{ item.4 }}/">View</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        {% if form.is_bound %}
+        <h2>Nothing Matched</h2>
+        {% endif %}
+        {% endif %} 
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
