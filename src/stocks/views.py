@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, HttpResponse
 
-from django.http import Http404
+import yfinance as yf
+from datetime import date, time, datetime
 
 from .forms import StockForm, FindForm, DetailForm
 from .models import Stock, DetailPage, Price
@@ -89,17 +90,19 @@ def stock_find_view(request):
 
 def stock_detail_view(request, id):
     detail_obj = get_object_or_404(DetailPage, id=id)
-    detail_prices = detail_obj.get_prices().all()
+    detail_prices = detail_obj.get_prices()
     form = DetailForm(request.POST or None)
     days = 8
-    print(detail_prices.values_list('date'))
     if (request.method == 'POST'):
         if (form.is_valid()):
             days = form.cleaned_data['days']
     dates = list(detail_prices.values_list('date', flat=True))
     y_close = list(detail_prices.values_list('close_price', flat=True))
     y_open = list(detail_prices.values_list('open_price', flat=True))
-    bar_plot = create_stock_bar_chart(dates=dates, y_open=y_open, y_close=y_close)
+    # for i in range(0, days):
+    #     dates.append(dates[:-1] + timedelta(days=1))
+    #     y_close.append()
+    bar_plot = create_stock_bar_chart(dates=dates, y_open=y_open, y_close=y_close, days=days)
 
     context = {
         'form' : form,

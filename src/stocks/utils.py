@@ -1,13 +1,15 @@
 import pandas as pd
 import yfinance as yf
+import numpy as np
 import operator
 import io
+import math
 import urllib, base64
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.dates as mdates
-from datetime import date, time, datetime
+from datetime import date, time, datetime, timedelta
 
 from .models import Stock, DetailPage, Price
 
@@ -71,18 +73,33 @@ def stock_find_single(stk_name, lower_day, lowest_day, lower_control, lowest_con
                     break
     return young
 
-def create_stock_bar_chart(dates, y_open, y_close):
+def create_stock_bar_chart(dates, y_open, y_close, days):
+    plt.close()
     y_open = list(y_open)
-    print(y_open)
     y_close = list(y_close)
-    print(type(y_close))
-    
+    y_open = list(map(float, y_open))
+    y_close = list(map(float, y_close))
     height_list = list(map(operator.sub, y_close, y_open))
     color_list = list(map(lambda x: 'red' if x >= 0 else 'green', 
                 height_list))
     plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y/%m/%d'))
     plt.gca().xaxis.set_major_locator(mdates.DayLocator())
-    plt.bar(x=dates, height=height_list, bottom=y_open, color=color_list)
+    print(dates)
+    print(y_open)
+    print(y_close)
+    plt.bar(x=range(len(dates)), height=height_list, bottom=y_open, color=color_list, width=0.5)
+    ymax = math.ceil(max(max(y_open), max(y_close)) * 1.0005)
+    ymin = math.floor(min(min(y_open), min(y_close)) / 1.0005)
+    print((ymin, ymax))
+    axes = plt.gca()
+    axes.set_ylim([ymin, ymax])
+    date_strings = []
+    fmt = '%Y/%m/%d'
+    for date in dates:
+        date_strings.append(date.strftime(fmt))
+    axes.set_xticks(range(len(dates)))
+    axes.set_xticklabels(date_strings, rotation=45, ha='right')
+    plt.gcf().autofmt_xdate()
     fig = plt.gcf()
     # convert into dtring buffer
     buf = io.BytesIO()
